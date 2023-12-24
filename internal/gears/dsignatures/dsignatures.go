@@ -4,6 +4,7 @@ import (
 	"asymmetric-encr/internal/gears/encryption/asymmetric"
 	"asymmetric-encr/internal/gears/hash"
 	"fmt"
+	"slices"
 )
 
 func Sign(msg []byte, encryptor *asymmetric.RSAEncryptor) ([]byte, error) {
@@ -27,19 +28,5 @@ func Verify(signature []byte, encryptor *asymmetric.RSAEncryptor) (bool, error) 
 	decryptedMsgHash := hash.SHA256Hash(decrData)
 	fmt.Println(decrHash)
 	fmt.Println(decryptedMsgHash)
-	return equal(decryptedMsgHash, decrHash), nil
-}
-
-func equal(a, b []byte) bool {
-	if len(a) != len(b) {
-		return false
-	}
-
-	for i, byte := range a {
-		if byte != b[i] {
-			return false
-		}
-	}
-
-	return true
+	return slices.Equal(decryptedMsgHash, decrHash), nil
 }
