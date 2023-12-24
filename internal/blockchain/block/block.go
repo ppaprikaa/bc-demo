@@ -11,7 +11,7 @@ import (
 )
 
 type Block struct {
-	Header       Header
+	Header       *Header
 	Hash         []byte
 	Transactions []transactions.Transaction
 }
@@ -40,7 +40,7 @@ func (h *Header) Serialize() []byte {
 
 func Genesis(txs []transactions.Transaction) Block {
 	return Block{
-		Header: Header{
+		Header: &Header{
 			MerkleRootHash: merkleRootHash(txs),
 			Timestamp:      uint64(time.Now().Unix()),
 		},
@@ -50,7 +50,7 @@ func Genesis(txs []transactions.Transaction) Block {
 
 func New(prevHash []byte, txs []transactions.Transaction) Block {
 	return Block{
-		Header: Header{
+		Header: &Header{
 			PrevHash:       prevHash,
 			MerkleRootHash: merkleRootHash(txs),
 			Timestamp:      uint64(time.Now().Unix()),
