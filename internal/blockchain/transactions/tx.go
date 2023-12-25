@@ -9,10 +9,6 @@ import (
 	"errors"
 )
 
-func NewTx() *Transaction {
-	return &Transaction{}
-}
-
 type Transaction struct {
 	ID      []byte
 	Inputs  []Input

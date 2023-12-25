@@ -5,9 +5,14 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"encoding/hex"
+	"errors"
 	"time"
 
 	"github.com/onrik/gomerkle"
+)
+
+var (
+	ErrInvalidBlockHash error = errors.New("invalid block hash")
 )
 
 type Block struct {
@@ -23,7 +28,7 @@ func (b *Block) HexHash() string {
 type Header struct {
 	PrevHash       []byte
 	MerkleRootHash []byte
-	Timestamp      uint64
+	Timestamp      int64
 	Target         []byte
 	Nonce          uint64
 }
@@ -42,7 +47,7 @@ func Genesis(txs []transactions.Transaction) Block {
 	return Block{
 		Header: &Header{
 			MerkleRootHash: merkleRootHash(txs),
-			Timestamp:      uint64(time.Now().Unix()),
+			Timestamp:      time.Now().Unix(),
 		},
 		Transactions: txs,
 	}
@@ -53,7 +58,7 @@ func New(prevHash []byte, txs []transactions.Transaction) Block {
 		Header: &Header{
 			PrevHash:       prevHash,
 			MerkleRootHash: merkleRootHash(txs),
-			Timestamp:      uint64(time.Now().Unix()),
+			Timestamp:      time.Now().Unix(),
 		},
 		Transactions: txs,
 	}
